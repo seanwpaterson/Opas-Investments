@@ -1,0 +1,111 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<section id="hero" class="section-alt">
+    <div class="container">
+        <div class="body-margin">
+            <div class="hero-content align-middle">
+                <div class="hero-text">
+                    <h1 class="section-title">Trading made easy</h1>
+                    <p>Opas is here to guide you in making smarter, safer investments. Register for free to start your journey.</p>
+                    <a class="button" asp-page="/enquire">Get started</a>
+                </div>
+                <div class="col-lg-1">
+                    <br />
+                </div>
+                <div class="hero-image">
+                    <img src="~/images/Opas Graph.svg" alt="Chart showing trend of increasing value." width="100%">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="about" class="pt-5 pb-1">
+    <div class="container">
+        <div class="body-margin">
+            <h1 class="section-title">What is Opas?</h1>
+            <div class="container px-4 py-1">
+                <p style="font-size: 1.2rem;">
+                    <em>
+                        "Opas Investments is first and foremost a guide to successful investing. We use a tried and tested strategy that goes as far back as 1969. We are focused on removing opinion, ego and bias when it comes to choosing your next correct investment."
+                    </em>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<hr />
+<section id="features" class="pt-1 pb-5">
+    <div class="container">
+        <div class="body-margin">
+            <h1 class="section-title">What we provide</h1>
+            <div class="container px-4 py-1" id="featured-3">
+                <div class="row g-4 py-5 row-cols-1 row-cols-lg-2">
+                    <div class="feature col mb-lg-4">
+                        <div class="feature-icon d-inline-flex bg-gradient fs-2 mb-3">
+                            <a asp-page="/guidance">
+                                <img class="card-icon" src="/images/GuidanceBlue.svg" alt="Guidance Icon">
+                            </a>
+                        </div>
+                        <h3 class="fs-2 text-body-emphasis">Guidance</h3>
+                        <p class="feature-description">
+                            Master the art of investing and protect your savings from inflation at OPAS Investments. Explore our guidance and education section to learn about the consequences of just holding money and investing money, where we breakdown the different methods of investing and how it can empower you to take control of your financial future.
+                        </p>
+                        <a asp-page="/guidance" class="icon-link">
+                            Go to Guidance
+                            <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                        </a>
+                    </div>
+                    <div class="feature col mb-lg-4">
+                        <div class="feature-icon d-inline-flex bg-gradient fs-2 mb-3">
+                            <a asp-page="/strategies">
+                                <img class="card-icon" src="/images/OPAS - Strategy.svg" alt="Strategies Icon">
+                            </a>
+                        </div>
+                        <h3 class="fs-2 text-body-emphasis">Strategies</h3>
+                        <p class="feature-description">
+                            Entering the world of investing can be daunting, especially if you're new to the game. The Opas Strategy is a battle-tested system that has returned an annual average of 21.3% since the 1960s. Imagine what this could do for your financial goals, whether it's creating a steady stream of passive income, retiring within 20 years, or setting up your children financially.
+                        </p>
+                        <a asp-page="/strategies" class="icon-link">
+                            Go to Strategies
+                            <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                        </a>
+                    </div>
+                    <div class="feature col">
+                        <div class="feature-icon d-inline-flex bg-gradient fs-2 mb-3">
+                            <a asp-page="/Sustainability">
+                                <img class="card-icon" src="/images/OpasVennDiagram.svg" alt="Sustainability Icon">
+                            </a>
+                        </div>
+                        <h3 class="fs-2 text-body-emphasis">Sustainability</h3>
+                        <p class="feature-description">
+                            Prioritise sustainability and make a positive impact on the world with OPAS Investments. Our sustainability section highlights our commitment to investing in ESG-focused companies and operating in a responsible manner. Trust us to deliver exceptional financial results while building a sustainable future for both our clients and the planet.
+                        </p>
+                        <a asp-page="/Sustainability" class="icon-link">
+                            Go to Sustainability
+                            <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                        </a>
+                    </div>
+                    <div class="feature col">
+                        <div class="feature-icon d-inline-flex bg-gradient fs-2 mb-3">
+                            <a asp-page="/calculator">
+                                <img class="card-icon" src="/images/ToolsBlue.svg" alt="Tools Icon">
+                            </a>
+                        </div>
+                        <h3 class="fs-2 text-body-emphasis">Tools</h3>
+                        <p class="feature-description">
+                            Supercharge your financial planning with the game-changing OPAS Calculator, a must-have tool in our Tools section. Discover the astounding potential of your savings by comparing various investment scenarios. See firsthand how the OPAS investment strategy outshines traditional savings accounts and even the mighty S&P 500. Unleash the power of smart investing and embark on a journey to financial success today.
+                        </p>
+                        <a asp-page="/calculator" class="icon-link">
+                            Go to Tools
+                            <svg class="bi"><use xlink:href="#chevron-right"></use></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

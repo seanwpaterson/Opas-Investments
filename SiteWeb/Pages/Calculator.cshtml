@@ -1,0 +1,114 @@
+﻿@page "/Tools/Calculator"
+@model SiteWeb.Pages.CalculatorModel
+@{
+    var yearsValue = Model.Years.HasValue ? $"value={Model.Years}" : "";
+    var initialDepositValue = Model.InitialDeposit.HasValue ? $"value={Model.InitialDeposit}" : "";
+    var furtherDepositValue = Model.FurtherDeposit.HasValue ? $"value={Model.FurtherDeposit}" : "";
+    var numPortfoliosValue = Model.NumPortfolios.HasValue ? $"value={Model.NumPortfolios}" : "";
+    var dividendYieldValue = Model.DividendYield.HasValue ? $"value={Model.DividendYield}" : "";
+}
+
+<section class="disclaimer-section">
+    <div class="container">
+        <h1>The Opas Investments Calculator</h1>
+        <div class="row align-items-center">
+            <div class="col-lg-4">
+
+                <form method="post">
+                    <div class="col-sm-12">
+                        <label for="Years" class="form-label text-sm-start">Number of years</label>
+                        <input type="number" class="form-control" id="Years" name="Years" placeholder="E.g. 10" @yearsValue required>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <label for="InitialDeposit" class="form-label text-sm-start">Initial deposit</label>
+                        <input type="number" class="form-control" id="InitialDeposit" name="InitialDeposit" placeholder="E.g. £400" @initialDepositValue required>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <label for="FurtherDeposit" class="form-label text-sm-start">Deposit per portfolio</label>
+                        <input type="number" class="form-control" id="FurtherDeposit" name="FurtherDeposit" placeholder="E.g. £100" @furtherDepositValue required>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <label for="NumPortfolios" class="form-label text-sm-start">Portfolios per year</label>
+                        <input type="number" class="form-control" id="NumPortfolios" name="NumPortfolios" placeholder="E.g. 12" @numPortfoliosValue  required>
+                    </div>
+                    <br>
+                    <div class="col-sm-12">
+                        <label for="DividendYield" class="form-label text-sm-start">Dividend yield %</label>
+                        <input type="number" class="form-control" id="DividendYield" name="DividendYield" placeholder="E.g. 5%" @dividendYieldValue required>
+                    </div>
+                    <br>
+                    <div class="col-sm-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" asp-for="Reinvest">
+                            <label class="form-check-label" for="Reinvest">Reinvest dividends</label>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-sm-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" asp-for="Inflation">
+                            <label class="form-check-label" for="Inflation">Toggle Inflation</label>
+                        </div>
+                    </div>
+                    <br>
+                    <button class="w-100 button btn-primary btn-lg" type="submit">Calculate</button>
+                </form>
+
+            </div>
+
+            <div class="col-lg-1"></div>
+            <div class="col-lg-7 text-center mb-auto">
+                <div class="mt-4 visible-xs mt-md-0"></div>
+                <div class="p-lg-3 mt-sm-5 mt-lg-0">
+                    <h3>Total Returns</h3>
+                    <div class="border border-primary rounded-3 overflow-hidden">
+                        <div class="row rounded-top">
+                            <div class="col-4 bg-primary text-white p-2">Cash</div>
+                            <div class="col-8 bg-light p-2">£@(string.Format("{0:0,0.00}", Model.TotalInvested))</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 bg-primary text-white p-2">Savings Account</div>
+                            <div class="col-8 bg-light p-2">£@(string.Format("{0:0,0.00}", Model.SavingsReturn))</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 bg-primary text-white p-2">S&P 500 ETF</div>
+                            <div class="col-8 bg-light p-2">£@(string.Format("{0:0,0.00}", Model.Sp500Return))</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 bg-primary text-white p-2">Opas Strategy</div>
+                            <div class="col-8 bg-light p-2">£@(string.Format("{0:0,0.00}", Model.OpasReturn))</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mt-4 visible-xs"></div>
+                <div class="p-lg-3 mt-sm-4 mt-lg-0">
+                    <h3>Total Dividends</h3>
+                    <div class="border border-primary rounded-3 overflow-hidden">
+                        <div class="row">
+                            <div class="col-4 bg-primary text-white p-2">S&P 500 ETF</div>
+                            <div class="col-8 bg-light p-2">£@(string.Format("{0:0,0.00}", Model.Sp500Dividends))</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 bg-primary text-white p-2">Opas Strategy</div>
+                            <div class="col-8 bg-light p-2">£@(string.Format("{0:0,0.00}", Model.OpasDividends))</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="text-start mt-5 text-black-50">
+                <p class="m-0">* Inflation calculated as @(Model.InflationPercentage * 100)% (2023)</p>
+                <p class="m-0">** SA Returns based on average @(Model.SavingsReturnPercentage * 100)% (2023)</p>
+                <p class="m-0">*** S&P500 based on all time average of @(Model.Sp500ReturnPercentage * 100)% (2023)</p>
+                <p class="m-0">**** Opas Strategy based on average @(Model.OpasReturnPercentage * 100)% from 1965 to 2009 (2023)</p>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,61 @@
+﻿@page
+@model SiteWeb.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Create and account";
+}
+
+<section id="signupForm" class="grid-x grid-padding-x align-center">
+    <div class="large-6 medium-12 cell">
+        <h1 class="h1 align-left">@ViewData["Title"]</h1>
+
+        <form asp-route-returnUrl="@Model.ReturnUrl" alt="register form" class="loginForm" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <hr />
+            <div class="grid-x grid-padding-x align-left">
+                <div class="large-3 cell">
+                    <label asp-for="Input!.Email" class="text-left middle"></label>
+                </div>
+                <div class="large-9 cell">
+                    <input asp-for="Input!.Email">
+                    <span asp-validation-for="Input!.Email"></span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x align-left">
+                <div class="large-3 cell">
+                    <label asp-for="Input!.PhoneNumber" class="text-left middle"></label>
+                </div>
+                <div class="large-9 cell">
+                    <input asp-for="Input!.PhoneNumber">
+                    <span asp-validation-for="Input!.PhoneNumber"></span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x align-left">
+                <div class="large-3 cell">
+                    <label asp-for="Input!.Password" class="text-left middle"></label>
+                </div>
+                <div class="large-9 cell">
+                    <input asp-for="Input!.Password">
+                    <span asp-validation-for="Input!.Password"></span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x align-left">
+                <div class="large-3 cell">
+                    <label asp-for="Input!.ConfirmPassword" class="text-left middle"></label>
+                </div>
+                <div class="large-9 cell">
+                    <input asp-for="Input!.ConfirmPassword">
+                    <span asp-validation-for="Input!.ConfirmPassword"></span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="large-3 small-12 cell">
+                    <button class="button btn-primary" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,12 @@
+﻿@page
+@model ConfirmEmailModel
+@{
+    ViewData["Title"] = "Confirm email";
+}
+
+<section id="loginForm" class="grid-x grid-padding-x align-center">
+    <div class="large-6 medium-12 cell">
+        <h1 class="h1 align-left">@ViewData["Title"]</h1>
+        <partial name="_StatusMessage" model="Model.StatusMessage" />
+    </div>
+</section>

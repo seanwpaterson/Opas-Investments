@@ -1,0 +1,10 @@
+﻿@{
+    if (ViewData["Layout"] != null && ViewData["Layout"]!.ToString() == "Admin")
+    {
+        Layout = "_AdminLayout";
+    }
+    else
+    {
+        Layout = "_Layout";
+    }
+}

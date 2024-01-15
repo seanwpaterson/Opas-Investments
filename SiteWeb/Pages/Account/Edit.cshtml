@@ -1,0 +1,136 @@
+﻿@page
+@model SiteWeb.Pages.Account.EditModel
+@{
+    if (Model.Input is null)
+    {
+        return;
+    }
+}
+
+<section class="disclaimer-section">
+    <div class="container">
+        <div class="body-margin">
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-11 large-9 align-self-middle">
+                    <div style="display: inline-flex;">
+                        <h1>Edit Your Account</h1>
+                        </div>
+                </div>
+                <div class="cell small-12 large-3 align-self-middle">
+                    <span class="float-center">@Model.Input.Status</span>
+                </div>
+            </div>
+            <br />
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="grid-x grid-padding-x align-left">
+                    <div class="large-3 cell">
+                        <label asp-for="Input!.FirstName" class="text-left middle"></label>
+                    </div>
+                    <div class="large-9 cell">
+                        <input asp-for="Input!.FirstName">
+                        <span asp-validation-for="Input!.FirstName"></span>
+                    </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                    <div class="large-3 cell">
+                        <label asp-for="Input!.LastName" class="text-left middle"></label>
+                    </div>
+                    <div class="large-9 cell">
+                        <input asp-for="Input!.LastName">
+                        <span asp-validation-for="Input!.LastName"></span>
+                    </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                    <div class="large-3 cell">
+                        <label asp-for="Input!.EmailAddress" class="text-left middle"></label>
+                    </div>
+                    <div class="large-9 cell">
+                        <input asp-for="Input!.EmailAddress">
+                        <span asp-validation-for="Input!.EmailAddress"></span>
+                    </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                    <div class="large-3 cell">
+                        <label asp-for="Input!.PhoneNumber" class="text-left middle"></label>
+                    </div>
+                    <div class="large-9 cell">
+                        <input asp-for="Input!.PhoneNumber">
+                        <span asp-validation-for="Input!.PhoneNumber"></span>
+                    </div>
+                </div>
+                <br />
+                <div class="grid-x grid-padding-x align-left">
+                    <div class="large-3 cell">
+                        <label asp-for="Input!.AddressLine1" class="text-left middle"></label>
+                    </div>
+                    <div class="large-9 cell">
+                        <input asp-for="Input!.AddressLine1">
+                        <span asp-validation-for="Input!.AddressLine1"></span>
+                    </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                    <div class="large-3 cell">
+                        <label asp-for="Input!.AddressLine2" class="text-left middle"></label>
+                    </div>
+                    <div class="large-9 cell">
+                        <input asp-for="Input!.AddressLine2">
+                        <span asp-validation-for="Input!.AddressLine2"></span>
+                    </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                    <div class="large-3 cell">
+                        <label asp-for="Input!.City" class="text-left middle"></label>
+                    </div>
+                    <div class="large-9 cell">
+                        <input asp-for="Input!.City">
+                        <span asp-validation-for="Input!.City"></span>
+                    </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                    <div class="large-3 cell">
+                        <label asp-for="Input!.County" class="text-left middle"></label>
+                    </div>
+                    <div class="large-9 cell">
+                        <input asp-for="Input!.County">
+                        <span asp-validation-for="Input!.County"></span>
+                    </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                    <div class="large-3 cell">
+                        <label asp-for="Input!.Postcode" class="text-left middle"></label>
+                    </div>
+                    <div class="large-9 cell">
+                        <input asp-for="Input!.Postcode">
+                        <span asp-validation-for="Input!.Postcode"></span>
+                    </div>
+                </div>
+                <div class="grid-x grid-padding-x">
+                    <div class="large-3 small-12 cell">
+                        <button class="button btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            </form>
+            <br />
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Date Joined:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@Model.Input.CreatedDate.ToShortDateString()</span>
+                </div>
+            </div>
+            @if (Model.Input.UpdatedDate.HasValue)
+            {
+                <div class="grid-x grid-padding-x">
+                    <div class="cell small-12 large-2 align-self-middle">
+                        <strong>Last Updated:</strong>
+                    </div>
+                    <div class="cell small-12 large-9 align-self-middle">
+                        <span>@Model.Input.UpdatedDate.Value.ToShortDateString() @Model.Input.UpdatedDate.Value.ToLongTimeString()</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

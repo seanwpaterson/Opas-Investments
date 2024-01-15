@@ -1,0 +1,128 @@
+﻿@page
+@model SiteWeb.Pages.Account.IndexModel
+@{
+    var userDetails = Model.UserDetails;
+
+    if (userDetails is null)
+    {
+        return;
+    }
+}
+
+<section class="disclaimer-section">
+    <div class="container">
+        <div class="body-margin">
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-11 large-9 align-self-middle">
+                    <div style="display: inline-flex;">
+                        <h1>Your Account</h1>
+                        <a href="/Account/Edit" class="edit-icon"><i class="fa-solid fa-pen" style="color: #000000;"></i></a>
+                    </div>
+                </div>
+                <div class="cell small-12 large-3 align-self-middle text-align-right">
+                    <span>@userDetails.Status</span>
+                </div>
+            </div>
+            <br />
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>First Name:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@userDetails.FirstName</span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Last Name:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@userDetails.LastName</span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Email Address:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@userDetails.EmailAddress</span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Phone Number:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@userDetails.PhoneNumber</span>
+                </div>
+            </div>
+            <br />
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Address Line 1:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@userDetails.AddressLine1</span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Address Line 2:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@userDetails.AddressLine2</span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Town/City:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@userDetails.City</span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>County:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@userDetails.County</span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Postcode:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@userDetails.Postcode</span>
+                </div>
+            </div>
+            <br />
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Date Joined:</strong>
+                </div>
+                <div class="cell small-12 large-9 align-self-middle">
+                    <span>@userDetails.CreatedDate.ToShortDateString()</span>
+                </div>
+            </div>
+            @if (userDetails.UpdatedDate.HasValue)
+            {
+                <div class="grid-x grid-padding-x">
+                    <div class="cell small-12 large-2 align-self-middle">
+                        <strong>Last Updated:</strong>
+                    </div>
+                    <div class="cell small-12 large-9 align-self-middle">
+                        <span>@userDetails.UpdatedDate.Value.ToShortDateString() @userDetails.UpdatedDate.Value.ToLongTimeString()</span>
+                    </div>
+                </div>
+            }
+            <br />
+            <div class="grid-x grid-padding-x">
+                <form class="cell" method="post">
+                    <button class="button button-danger" type="submit">Delete Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

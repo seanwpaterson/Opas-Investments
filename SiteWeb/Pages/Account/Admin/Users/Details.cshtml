@@ -1,0 +1,89 @@
+﻿@page "{*Id}"
+@model DetailsModel
+@{
+	var user = Model.ApplicationUser;
+
+	if (user is null)
+	{
+		return;
+	}
+}
+
+<section class="panel-info">
+	<div class="container">
+		<div class="row panel-info-main">
+			<div class="xs-10">
+				<h1 class="panel-info-id">@user.FirstName @user.LastName</h1>
+			</div>
+			<div class="xs-2">
+				<form class="mini-form-detail justify-content-end" method="post">
+					<button class="btn-danger btn-mf" type="submit">Delete</button>
+				</form>
+			</div>
+			<div class="xs-12 sm-12 lg-6">
+				<div class="row">
+					<div class="xs-12 sm-5"><h4>Email Address:</h4></div>
+					<div class="xs-12 sm-7"><h5>@user.Email</h5></div>
+				</div>
+			</div>
+			<div class="xs-12 sm-12 lg-6">
+				<div class="row">
+					<div class="xs-12 sm-5"><h4>Phone Number:</h4></div>
+					<div class="xs-12 sm-7"><h5>@user.PhoneNumber</h5></div>
+				</div>
+			</div>
+			<div class="xs-12 sm-12 lg-6">
+				<div class="row">
+					<div class="xs-12 sm-5"><h4>Submitted date:</h4></div>
+					<div class="xs-12 sm-7"><h5>@user.DateCreated.ToShortDateString()</h5></div>
+				</div>
+			</div>
+			@if (user.DateUpdated.HasValue)
+			{
+				<div class="xs-12 sm-12 lg-6">
+					<div class="row">
+						<div class="xs-12 sm-5"><h4>Last update:</h4></div>
+						<div class="xs-12 sm-7"><h5>@user.DateUpdated.Value.ToShortDateString()</h5></div>
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</section>
+
+<section class="panel-info">
+	<div class="container">
+		<div class="row panel-info-main">
+			<div class="xs-12 sm-12 lg-6">
+				<div class="row">
+					<div class="xs-12 sm-5"><h4>Address Line 1:</h4></div>
+					<div class="xs-12 sm-7"><h5>@user.AddressLine1</h5></div>
+				</div>
+			</div>
+			<div class="xs-12 sm-12 lg-6">
+				<div class="row">
+					<div class="xs-12 sm-5"><h4>Address Line 2:</h4></div>
+					<div class="xs-12 sm-7"><h5>@user.AddressLine2</h5></div>
+				</div>
+			</div>
+			<div class="xs-12 sm-12 lg-6">
+				<div class="row">
+					<div class="xs-12 sm-5"><h4>City:</h4></div>
+					<div class="xs-12 sm-7"><h5>@user.City</h5></div>
+				</div>
+			</div>
+			<div class="xs-12 sm-12 lg-6">
+				<div class="row">
+					<div class="xs-12 sm-5"><h4>County:</h4></div>
+					<div class="xs-12 sm-7"><h5>@user.County</h5></div>
+				</div>
+			</div>
+			<div class="xs-12 sm-12 lg-6">
+				<div class="row">
+					<div class="xs-12 sm-5"><h4>Postcode:</h4></div>
+					<div class="xs-12 sm-7"><h5>@user.Postcode</h5></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

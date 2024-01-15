@@ -1,0 +1,37 @@
+﻿@page "{*Id}"
+@model SiteWeb.Pages.Account.Admin.Enquiries.ConfirmDeleteModel
+@{
+	var enquiry = Model.Enquiry;
+
+	if (enquiry is null)
+	{
+		return;
+	}
+}
+<section class="panel-info grid-x grid-padding-x align-center">
+	<div class="container">
+		<div class="row panel-info-main">
+			<form method="post">
+				<div class="row">
+					<div class="xs-10">
+						<h1 class="panel-info-id">Delete Enquiry from @enquiry.FirstName @enquiry.LastName</h1>
+					</div>
+				</div>
+				<div asp-validation-summary="All" class="text-danger"></div>
+				<div class="grid-x grid-padding-x align-left">
+					<div class="large-12 cell">
+						<label asp-for="@Model.Confirm" class="text-left middle">
+							<input asp-for="@Model.Confirm" />
+							@Html.DisplayNameFor(m => m.Confirm)
+						</label>
+					</div>
+				</div>
+				<div class="grid-x grid-padding-x">
+					<div class="large-3 small-12 cell">
+						<button class="btn-danger btn-mf" type="submit">Delete</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>

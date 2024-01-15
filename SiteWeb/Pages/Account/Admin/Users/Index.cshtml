@@ -1,0 +1,32 @@
+﻿@page
+@model IndexModel
+@{
+	var url = Url.Action("GetAllMembersListing", "Members");
+}
+
+<section class="high-priority">
+	<div class="container">
+		<div class="row">
+			<div class="lg-12">
+				<div class="high-priority-header">
+					<h1 class="h4">Users</h1>
+				</div>
+				<div class="high-priority-table">
+					<table class="table dt-responsive cstm-datatable nowrap" id="usersTable" cellspacing="0">
+						<thead>
+							<tr>
+								<th>Last name</th>
+								<th>First name</th>
+								<th>Email address</th>
+								<th>Status</th>
+								<th>Date Joined</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

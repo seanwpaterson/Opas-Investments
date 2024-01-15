@@ -1,0 +1,62 @@
+﻿@page
+@model SiteWeb.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<section id="loginForm" class="grid-x grid-padding-x align-center">
+    <div class="large-6 medium-12 cell">
+        <h1 class="h1 align-left">@ViewData["Title"]</h1>
+
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <hr />
+            <div class="grid-x grid-padding-x align-left">
+                <div class="large-3 cell">
+                    <label asp-for="Input!.Email" class="text-left middle"></label>
+                </div>
+                <div class="large-9 cell">
+                    <input asp-for="Input!.Email">
+                    <span asp-validation-for="Input!.Email"></span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x align-left">
+                <div class="large-3 cell">
+                    <label asp-for="Input!.Password" class="text-left middle"></label>
+                </div>
+                <div class="large-9 cell">
+                    <input asp-for="Input!.Password">
+                    <span asp-validation-for="Input!.Password"></span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x align-left">
+                <div class="large-12 cell">
+                    <label asp-for="Input!.RememberMe" class="text-left middle">
+                        <input asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="large-3 small-12 cell">
+                    <button class="button btn-primary" type="submit">Log in</button>
+                </div>
+            </div>
+            <div>
+                <p>
+                    <a id="forgot-password" class="link" asp-page="./ForgotPassword">Forgot your password?</a>
+                </p>
+                <p>
+                    <a class="link" asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                </p>
+                <p>
+                    <a id="resend-confirmation" class="link" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

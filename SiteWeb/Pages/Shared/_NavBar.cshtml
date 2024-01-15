@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Identity;
+@using SiteWeb.Models.Users;
+@using System.Security.Claims;
+@inject IHttpContextAccessor? _context;
+@inject UserManager<ApplicationUser> _userManager;
+@{
+    var icon = "header-icon-link";
+
+    if (ViewBag.Icon is not null && ViewBag.Icon.Contains("Sustainability"))
+    {
+        icon = "header-sustainability-icon-link";
+    }
+
+    ApplicationUser? user = null;
+
+    if (_context.HttpContext is not null)
+    {
+        user = _userManager.GetUserAsync(_context.HttpContext.User).Result;
+    }
+}
+
+<div class="title-bar" data-responsive-toggle="animated-menu" data-hide-for="large">
+    <a class="@icon nav-icon" href="/" aria-label="Home button"></a>
+    <button class="menu-icon" type="button" data-toggle aria-label="Expand menu"></button>
+</div>
+
+<div class="top-bar" id="animated-menu">
+    <a href="/" class="@icon nav-icon hide-for-small-only hide-for-medium-only show-for-large-up"></a>
+    <div class="top-bar-left">
+        <ul class="dropdown menu" data-dropdown-menu>
+            <li class="nav-li"><a class="nav-link" asp-page="/guidance">Guidance</a></li>
+            <li class="nav-li"><a class="nav-link" asp-page="/strategies">Strategies</a></li>
+            <li class="nav-li"><a class="nav-link" asp-page="/sustainability">Sustainability</a></li>
+            <li class="nav-li"><a class="nav-link" asp-page="/research">Research</a></li>
+            <li class="nav-li">
+                <a>Tools</a>
+                <ul class="menu submenu-item">
+                    <a class="nav-link" asp-page="/calculator">Calculator</a>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="top-bar-right">
+        <ul class="menu">
+            @if (user is null)
+            {
+                <li class="nav-li"><a class="nav-link" asp-page="/account/login">Login</a></li>
+                <li class="nav-li"><a class="nav-link" asp-page="/account/register" class="button nav-button">Register</a></li>
+            }
+            else
+            {
+                <li class="nav-li">
+                    <a href="/account/"><i class="fa-solid fa-circle-user fa-2xl" style="color: #f8f9fa;"></i></a>
+                </li>
+                <li class="nav-li">
+                    <form method="post" asp-page="/account/logout">
+                        <button type="submit" class="button nav-button">Logout</button>
+                    </form>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+﻿@page
+@model SiteWeb.Pages.Account.ConfirmDeleteModel
+@{
+	ViewData["Title"] = "Confirm account deletion";
+}
+
+<section id="loginForm" class="grid-x grid-padding-x align-center">
+	<div class="large-9 medium-12 cell">
+		<h1 class="h1 align-left">@ViewData["Title"]</h1>
+
+		<form method="post">
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<hr />
+			<div class="grid-x grid-padding-x align-left">
+				<div class="large-12 cell">
+					<label asp-for="@Model.Confirm" class="text-left middle">
+						<input asp-for="@Model.Confirm" />
+						@Html.DisplayNameFor(m => m.Confirm)
+					</label>
+				</div>
+			</div>
+			<div class="grid-x grid-padding-x">
+				<div class="large-3 small-12 cell">
+					<button class="button button-danger" type="submit">Delete</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>

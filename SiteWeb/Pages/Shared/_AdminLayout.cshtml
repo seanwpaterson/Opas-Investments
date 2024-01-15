@@ -1,0 +1,252 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<partial name="~/Pages/Shared/_AdminHead.cshtml" />
+</head>
+<body>
+
+	<partial name="~/Pages/Shared/_AdminHeader.cshtml" />
+
+	<main role="main">
+		@RenderBody()
+	</main>
+
+	<partial name="~/Pages/Shared/_AdminFooter.cshtml" />
+
+	<partial name="~/Pages/Shared/_AdminScripts.cshtml" />
+
+	<script>
+
+		var usersTable = null;
+		var enquiriesTabel = null;
+
+		function drawUsersTable() {
+
+			var minDate, maxDate;
+
+			// Custom filtering function which will search data in column four between two values
+			$.fn.DataTable.ext.search.push(function (settings, data, dataIndex) {
+				var min = minDate === null ? null : minDate;
+				var max = maxDate === null ? null : maxDate;
+				var date = new Date(data[4]);
+
+				if (
+					(min === null && max === null) ||
+					(min === null && date <= max) ||
+					(min <= date && max === null) ||
+					(min <= date && date <= max)
+				) {
+					return true;
+				}
+				return false;
+			});
+
+			// Create date inputs
+			if (typeof minDate != 'undefined') {
+				minDate = new DateTime('#min', {
+					format: 'MMMM Do YYYY'
+				});
+			} else {
+				minDate = null;
+			}
+
+			if (typeof maxDate != 'undefined') {
+				maxDate = new DateTime('#max', {
+					format: 'MMMM Do YYYY'
+				});
+			} else {
+				maxDate = null;
+			}
+
+			usersTable = $('#usersTable').DataTable({
+				searching: true,
+				"lengthChange": false,
+				"info": false,
+				"autoWidth": false,
+				"responsive": {
+					breakpoints: [
+						{ name: 'desktop', width: Infinity },
+						{ name: 'tablet', width: 1024 },
+						{ name: 'fablet', width: 768 },
+						{ name: 'phone', width: 480 }
+					]
+				},
+				pagingType: 'numbers',
+				"dom": '<"row justify-content-between top-information"><"search-bar"f>rt<"bottom-information high-priority-table-pagination"ip><"clear">',
+				// "fixedHeader": false,
+				"pageLength": 10,
+				columns: [
+					{ data: 'lastName' },
+					{ data: 'firstName' },
+					{ data: 'emailAddress' },
+					{
+						data: {
+							"_": "status",
+							"filter": "status",
+							"display": "statusHtml"
+						}
+					},
+					{
+						data: {
+							"_": "submittedDate",
+							"filter": "submittedDate",
+							"display": "submittedDateHtml"
+						}
+					},
+				],
+				language: {
+					search: "",
+					searchPlaceholder: "Search Users",
+					emptyTable: "<div class='callout warning text-center margin-0'><p>No users found</p></div>",
+					zeroRecords: "<div class='callout warning text-center margin-0'><p class='h4'>No matching users found</p></div>",
+					loadingRecords: "Loading Users...",
+					aria: {
+						sortAscending: ": activate to sort column ascending",
+						sortDescending: ": activate to sort column descending",
+					}
+				},
+				ajax: {
+					url: "/api/users/",
+					dataSrc: ""
+				},
+				deferRender: true,
+				rowId: 'Id',
+			});
+
+			usersTable.on("click", "tr", function (e, dt, type, indexes) {
+				var row = usersTable.row(this).data();
+
+				if (row == null) {
+					return;
+				}
+
+				var id = row.id;
+
+				if (typeof id != 'undefined') {
+					document.location.href = '/Account/Admin/Users/Details/' + id;
+				}
+
+				return;
+			});
+		}
+
+		function drawEnquiriesTable() {
+
+			var minDate, maxDate;
+
+			// Custom filtering function which will search data in column four between two values
+			$.fn.DataTable.ext.search.push(function (settings, data, dataIndex) {
+				var min = minDate === null ? null : minDate;
+				var max = maxDate === null ? null : maxDate;
+				var date = new Date(data[4]);
+
+				if (
+					(min === null && max === null) ||
+					(min === null && date <= max) ||
+					(min <= date && max === null) ||
+					(min <= date && date <= max)
+				) {
+					return true;
+				}
+				return false;
+			});
+
+			// Create date inputs
+			if (typeof minDate != 'undefined') {
+				minDate = new DateTime('#min', {
+					format: 'MMMM Do YYYY'
+				});
+			} else {
+				minDate = null;
+			}
+
+			if (typeof maxDate != 'undefined') {
+				maxDate = new DateTime('#max', {
+					format: 'MMMM Do YYYY'
+				});
+			} else {
+				maxDate = null;
+			}
+
+			enquiriesTabel = $('#enquiriesTable').DataTable({
+				search: {
+					return: true
+				},
+				"lengthChange": false,
+				"info": false,
+				"autoWidth": false,
+				"responsive": {
+					breakpoints: [
+						{ name: 'desktop', width: Infinity },
+						{ name: 'tablet', width: 1024 },
+						{ name: 'fablet', width: 768 },
+						{ name: 'phone', width: 480 }
+					]
+				},
+				pagingType: 'numbers',
+				"dom": '<"row justify-content-between top-information"><"search-bar"f>rt<"bottom-information high-priority-table-pagination"ip><"clear">',
+				// "fixedHeader": false,
+				"pageLength": 10,
+				columns: [
+					{ data: 'id'},
+					{ data: 'lastName' },
+					{ data: 'firstName' },
+					{ data: 'emailAddress' },
+					{ data: 'phoneNumber' },
+					{
+						data: {
+							"_": "status",
+							"filter": "status",
+							"display": "statusHtml"
+						}
+					},
+					{
+						data: {
+							"_": "submittedDate",
+							"filter": "submittedDate",
+							"display": "submittedDateHtml"
+						}
+					},
+				],
+				language: {
+					search: "",
+					searchPlaceholder: "Search Enquiries",
+					emptyTable: "<div class='callout warning text-center margin-0'><p>No enquiries found</p></div>",
+					zeroRecords: "<div class='callout warning text-center margin-0'><p class='h4'>No matching enquiries found</p></div>",
+					loadingRecords: "Loading Enquiries...",
+					aria: {
+						sortAscending: ": activate to sort column ascending",
+						sortDescending: ": activate to sort column descending",
+					}
+				},
+				ajax: {
+					url: "/api/enquiries/",
+					dataSrc: ""
+				},
+				deferRender: true,
+				rowId: 'Id',
+			});
+
+			enquiriesTabel.on("click", "tr", function (e, dt, type, indexes) {
+				var row = enquiriesTabel.row(this).data();
+
+				if (row == null) {
+					return;
+				}
+
+				var id = row.id;
+
+				if (typeof id != 'undefined') {
+					document.location.href = '/Account/Admin/Enquiries/Details/' + id;
+				}
+
+				return;
+			});
+		}
+
+		drawUsersTable();
+		drawEnquiriesTable();
+	</script>
+
+</body>
+</html>
