@@ -1,29 +1,41 @@
 ﻿@page
 @model IndexModel
 @{
+    ViewData["Title"] = "Main Menu";
+
+    var itemCount = Model.MenuItems.Count();
 }
 
-<section class="landing-main">
-    <div class="container">
-        <div class="row">
-            <div class="xs-12">
-                <a class="landing-main-box" asp-page="/Account/Admin/Enquiries/Index">
-                    <div class="landing-container">
-                        <h2 class="landing-title">Enquiries</h2>
+<main>
+    <section class="landing-main">
+        <div class="container">
+            <div class="row">
+
+                @if (Model.MenuItems.Count() == 0)
+                {
+                    <div class="callout primary text-center xs-12">
+                        <p class="h3 marginBottom">You have not been given permission to access any section of this system.</p>
+                        <p class="h3 marginBottom">If you think this is a mistake, please contact a system admin.</p>
                     </div>
-                </a>
+                }
+
+                @foreach (var item in Model.MenuItems)
+                {
+                    var cardClass = $"xs-12 md-{12} lg-{12}";
+
+                    <div class="@cardClass">
+                        <a asp-page="@item.Link" class="landing-main-box">
+                            <div class="landing-container">
+                                <i class="fa-solid @item.Icon"></i>
+                                <h2 class="landing-title">
+                                    @item.Title
+                                </h2>
+                            </div>
+                        </a>
+                    </div>
+                }
+
             </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="xs-12">
-                <a class="landing-main-box" asp-page="/Account/Admin/Users/Index">
-                    <div class="landing-container">
-                        <h2 class="landing-title">Users</h2>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
+</main>

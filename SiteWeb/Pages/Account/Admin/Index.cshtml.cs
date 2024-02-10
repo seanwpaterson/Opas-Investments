@@ -1,30 +1,75 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Opas.Core.DataService.Infrastructure;
+using Opas.Core.DataService.Models.Users;
+using Opas.Core.DataService.Services.Users;
+using SiteWeb.Models;
 using SiteWeb.Services;
 
-namespace SiteWeb.Pages.Account.Admin
+namespace SiteWeb.Pages.Account.Admin;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    protected readonly IUserService _userService;
+    protected readonly IAuthorizationAdminService _authorizationService;
+
+    public List<MenuItem> MenuItems { get; set; }
+
+    public IndexModel(IUserService userService, IAuthorizationAdminService authorizationService)
     {
-        private readonly IAuthorizationAdminService _authorizationService;
+        _userService = userService;
+        _authorizationService = authorizationService;
 
-        public IndexModel(IAuthorizationAdminService authorizationService)
+        MenuItems = new List<MenuItem>();
+    }
+
+    public async Task<IActionResult> OnGet()
+    {
+        var isAuthorized = await _authorizationService.AuthorizeForAdminAsync(User);
+
+        if (isAuthorized == false)
         {
-            _authorizationService = authorizationService;
+            return StatusCode(403);
         }
 
-        public async Task<IActionResult> OnGet()
-        {
-            bool isAuthorized = await _authorizationService.AuthorizeForAdminAsync(this.User);
+        ViewData["Layout"] = "Admin";
 
-            if (isAuthorized == false)
+        var user = UserHelper.GetUserFromClaims(User, _userService);
+
+        if (user == null)
+        {
+            return StatusCode(403);
+        }
+
+        MenuItems = await BuildMenuAsync(user);
+
+        return Page();
+    }
+
+    private async Task<List<MenuItem>> BuildMenuAsync(User user)
+    {
+        var items = new List<MenuItem>();
+
+        if (await _userService.IsInRoleAsync(user, UserHelper.PortfolioManagementRoleName))
+        {
+            items.Add(new MenuItem
             {
-                return Forbid();
-            }
-
-            ViewData["Layout"] = "Admin";
-
-            return Page();
+                Title = "Portfolios",
+                Icon = "fa-file-invoice",
+                Link = "/Account/Admin/Portfolios/Index"
+            });
         }
+
+        if (await _userService.IsInRoleAsync(user, UserHelper.UserManagementRoleName))
+        {
+            items.Add(new MenuItem
+            {
+                Title = "Users",
+                Icon = "fa-solid fa-users",
+                Link = "/Account/Admin/Users/Index"
+            });
+        }
+
+        return items;
     }
 }

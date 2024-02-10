@@ -1,10 +1,13 @@
 ﻿@page
 @model SiteWeb.Pages.StrategiesModel
+@{
+    ViewData["Title"] = "Strategies";
+}
 
 <section class="disclaimer-section">
     <div class="container">
         <div class="body-margin">
-            <h1 class="h1">Strategies</h1>
+            <h1 class="h2 align-left">@ViewData["Title"]</h1>
             <hr>
             <div class="d-flex flex-column flex-md-row justify-content-between">
                 <div class="d-flex mb-3">
@@ -32,7 +35,7 @@
                                 <li><strong>Repeat and Reap:</strong> This cycle repeats monthly, 12 times a year. As you follow our guidance, you start selling and taking returns monthly, reinvesting in the new year's portfolios</li>
                             </ul>
                             <div class="pt-2 text-center">
-                                <a asp-page="/enquire" style="color: #000;">
+                                <a asp-page="/inquire" style="color: #000;">
                                     <h3 class="h4"><strong>Ready to begin?</strong></h3>
                                     <p>Start your risk-free 3-month trial now.</p>
                                 </a>

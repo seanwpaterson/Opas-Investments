@@ -1,4 +1,6 @@
 ﻿@page "{*Id}"
+@using Opas.Core.DataService.Models.Users;
+@using SiteWeb.Extensions;
 @model DetailsModel
 @{
 	var user = Model.ApplicationUser;
@@ -7,83 +9,196 @@
 	{
 		return;
 	}
+
+	ViewData["Title"] = "User Details";
+
+	var displayName = string.Empty;
+
+	if (string.IsNullOrWhiteSpace(user.FirstName) || string.IsNullOrWhiteSpace(user.LastName))
+	{
+		displayName = $"User: {user.UserId}";
+	}
+	else
+	{
+		displayName = $"{@user.FirstName} {@user.LastName}";
+	}
+
+	var isAdminText = (Model.IsAdmin == true) ? "Enabled" : "Disabled";
+	var isUserRoleText = (Model.IsUserRole == true) ? "Enabled" : "Disabled";
+	var isPortfolioRoleText = (Model.IsPortfolioRole == true) ? "Enabled" : "Disabled";
 }
 
-<section class="panel-info">
-	<div class="container">
-		<div class="row panel-info-main">
-			<div class="xs-10">
-				<h1 class="panel-info-id">@user.FirstName @user.LastName</h1>
-			</div>
-			<div class="xs-2">
-				<form class="mini-form-detail justify-content-end" method="post">
-					<button class="btn-danger btn-mf" type="submit">Delete</button>
-				</form>
-			</div>
-			<div class="xs-12 sm-12 lg-6">
-				<div class="row">
-					<div class="xs-12 sm-5"><h4>Email Address:</h4></div>
-					<div class="xs-12 sm-7"><h5>@user.Email</h5></div>
+<main>
+	<section class="container">
+		<div style="padding: 20px 0px;">
+			<h4><a asp-page="/Account/Admin/Index">Menu</a>   &gt;   <a asp-page="/Account/Admin/Users/Index">Users</a>   &gt;   Details</h4>
+		</div>
+	</section>
+
+	<section class="panel-info">
+		<div class="container">
+			<div class="row panel-info-main">
+				<div class="xs-12">
+					<h1 class="panel-info-id">@displayName</h1>
 				</div>
-			</div>
-			<div class="xs-12 sm-12 lg-6">
-				<div class="row">
-					<div class="xs-12 sm-5"><h4>Phone Number:</h4></div>
-					<div class="xs-12 sm-7"><h5>@user.PhoneNumber</h5></div>
-				</div>
-			</div>
-			<div class="xs-12 sm-12 lg-6">
-				<div class="row">
-					<div class="xs-12 sm-5"><h4>Submitted date:</h4></div>
-					<div class="xs-12 sm-7"><h5>@user.DateCreated.ToShortDateString()</h5></div>
-				</div>
-			</div>
-			@if (user.DateUpdated.HasValue)
-			{
 				<div class="xs-12 sm-12 lg-6">
 					<div class="row">
-						<div class="xs-12 sm-5"><h4>Last update:</h4></div>
-						<div class="xs-12 sm-7"><h5>@user.DateUpdated.Value.ToShortDateString()</h5></div>
+						<div class="xs-12 sm-5"><h4>Email Address:</h4></div>
+						<div class="xs-12 sm-7"><h5>@user.Email</h5></div>
 					</div>
 				</div>
-			}
-		</div>
-	</div>
-</section>
+				<div class="xs-12 sm-12 lg-6">
+					<div class="row">
+						<div class="xs-12 sm-5"><h4>Phone Number:</h4></div>
+						<div class="xs-12 sm-7"><h5>@user.PhoneNumber</h5></div>
+					</div>
+				</div>
+				<div class="xs-12 sm-12 lg-6">
+					<div class="row">
+						<div class="xs-12 sm-5"><h4>Submitted date:</h4></div>
+						<div class="xs-12 sm-7"><h5>@user.DateCreated.ToShortDateString()</h5></div>
+					</div>
+				</div>
+				@if (user.DateUpdated.HasValue)
+				{
+					<div class="xs-12 sm-12 lg-6">
+						<div class="row">
+							<div class="xs-12 sm-5"><h4>Last update:</h4></div>
+							<div class="xs-12 sm-7"><h5>@user.DateUpdated.Value.ToShortDateString()</h5></div>
+						</div>
+					</div>
+				}
 
-<section class="panel-info">
-	<div class="container">
-		<div class="row panel-info-main">
-			<div class="xs-12 sm-12 lg-6">
-				<div class="row">
-					<div class="xs-12 sm-5"><h4>Address Line 1:</h4></div>
-					<div class="xs-12 sm-7"><h5>@user.AddressLine1</h5></div>
+				<div class="xs-12 sm-12 lg-6">
+					<div class="row">
+						<div class="xs-12 sm-5"><h4>Address Line 1:</h4></div>
+						<div class="xs-12 sm-7"><h5>@user.AddressLine1</h5></div>
+					</div>
 				</div>
-			</div>
-			<div class="xs-12 sm-12 lg-6">
-				<div class="row">
-					<div class="xs-12 sm-5"><h4>Address Line 2:</h4></div>
-					<div class="xs-12 sm-7"><h5>@user.AddressLine2</h5></div>
+				<div class="xs-12 sm-12 lg-6">
+					<div class="row">
+						<div class="xs-12 sm-5"><h4>Address Line 2:</h4></div>
+						<div class="xs-12 sm-7"><h5>@user.AddressLine2</h5></div>
+					</div>
 				</div>
-			</div>
-			<div class="xs-12 sm-12 lg-6">
-				<div class="row">
-					<div class="xs-12 sm-5"><h4>City:</h4></div>
-					<div class="xs-12 sm-7"><h5>@user.City</h5></div>
+				<div class="xs-12 sm-12 lg-6">
+					<div class="row">
+						<div class="xs-12 sm-5"><h4>City:</h4></div>
+						<div class="xs-12 sm-7"><h5>@user.City</h5></div>
+					</div>
 				</div>
-			</div>
-			<div class="xs-12 sm-12 lg-6">
-				<div class="row">
-					<div class="xs-12 sm-5"><h4>County:</h4></div>
-					<div class="xs-12 sm-7"><h5>@user.County</h5></div>
+				<div class="xs-12 sm-12 lg-6">
+					<div class="row">
+						<div class="xs-12 sm-5"><h4>County:</h4></div>
+						<div class="xs-12 sm-7"><h5>@user.County</h5></div>
+					</div>
 				</div>
-			</div>
-			<div class="xs-12 sm-12 lg-6">
-				<div class="row">
-					<div class="xs-12 sm-5"><h4>Postcode:</h4></div>
-					<div class="xs-12 sm-7"><h5>@user.Postcode</h5></div>
+				<div class="xs-12 sm-12 lg-6">
+					<div class="row">
+						<div class="xs-12 sm-5"><h4>Postcode:</h4></div>
+						<div class="xs-12 sm-7"><h5>@user.Postcode</h5></div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
+
+	<section class="panel-info">
+		<div class="container">
+			<div class="row panel-info-main">
+				<form method="post" class="xs-12 md-6 lg-3">
+					<h3 class="panel-info-id">Statuses</h3>
+					<div class="form-group">
+						<legend>
+							<label asp-for="IsAdmin" class="form-label">Account Status</label>
+						</legend>
+						<div class="checkbox-choice">
+							<select class="select-field" id="user-status" name="user-status">
+								@foreach (var i in Enum.GetValues(typeof(UserStatus)))
+								{
+									var status = (UserStatus)i;
+									var statusName = status.GetName();
+
+									if (status == UserStatus.Unknown)
+									{
+										continue;
+									}
+									if (user.Status == status)
+									{
+										<option value="@i" class="" selected>@statusName</option>
+									}
+									else
+									{
+										<option value="@i" class="">@statusName</option>
+									}
+								}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<legend>
+							<label asp-for="IsAdmin" class="form-label">Account Status</label>
+						</legend>
+						<div class="checkbox-choice">
+							<select class="select-field" id="membership-status" name="membership-status">
+								@foreach (var i in Enum.GetValues(typeof(MembershipStatus)))
+								{
+									var status = (MembershipStatus)i;
+									var statusName = status.GetName();
+
+									if (status == MembershipStatus.None)
+									{
+										continue;
+									}
+									if (user.MembershipStatus == status)
+									{
+										<option value="@i" class="" selected>@statusName</option>
+									}
+									else
+									{
+										<option value="@i" class="">@statusName</option>
+									}
+								}
+							</select>
+						</div>
+					</div>
+
+					<h3 class="panel-info-id">Roles</h3>
+					<div class="form-group">
+						<legend>
+							<label asp-for="IsAdmin" class="form-label">Administrator:</label>
+							<span class="hint">Can access the administrator system</span>
+						</legend>
+						<div class="checkbox-choice">
+							<input asp-for="IsAdmin" type="checkbox" style="width: auto; margin-left: 10px;" />
+							<label asp-for="IsAdmin">@isAdminText</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<legend>
+							<label asp-for="IsUserRole" class="form-label">User Management:</label>
+							<span class="hint">Can view user details and control permissions</span>
+						</legend>
+						<div class="checkbox-choice">
+							<input asp-for="IsUserRole" type="checkbox" style="width: auto; margin-left: 10px;" />
+							<label asp-for="IsUserRole">@isUserRoleText</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<legend>
+							<label asp-for="IsPortfolioRole" class="form-label">Portfolio Management:</label>
+							<span class="hint">Can add, edit, and delete portfolios</span>
+						</legend>
+						<div class="checkbox-choice">
+							<input asp-for="IsPortfolioRole" type="checkbox" style="width: auto; margin-left: 10px;" />
+							<label asp-for="IsPortfolioRole">@isPortfolioRoleText</label>
+						</div>
+					</div>
+					<div class="form-group-btn">
+						<button class="btn btn-primary fcr1" type="submit">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+</main>

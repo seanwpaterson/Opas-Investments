@@ -1,99 +1,108 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Opas.Core.DataService.Models.Users;
+using Opas.Core.DataService.Services.Users;
 using SiteWeb.Models.Users;
 using System.Text;
 using System.Text.Encodings.Web;
 
-namespace SiteWeb.Pages.Account
+namespace SiteWeb.Pages.Account;
+
+public class RegisterModel : PageModel
 {
-    public class RegisterModel : PageModel
+    protected readonly IUserService _userService;
+    protected readonly IEmailSender _emailSender;
+    protected readonly ILogger<RegisterModel> _logger;
+
+    [BindProperty]
+    public SignUpFormModel Input { get; set; }
+
+    public string ReturnUrl { get; set; } = string.Empty;
+
+    public RegisterModel(IUserService userService,
+        IEmailSender emailSender,
+        ILogger<RegisterModel> logger)
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        _userService = userService;
+        _logger = logger;
+        _emailSender = emailSender;
 
+        Input = new SignUpFormModel();
+    }
 
-        [BindProperty]
-        public SignUpFormModel Input { get; set; } = new SignUpFormModel();
+    public void OnGet(string? returnUrl = null)
+    {
+        ReturnUrl = returnUrl ?? string.Empty;
+    }
 
-        public string ReturnUrl { get; set; } = string.Empty;
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+    {
+        returnUrl ??= Url.Content("~/");
 
-        public RegisterModel(
-            SignInManager<ApplicationUser> signInManager,
-            UserManager<ApplicationUser> userManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+        var submissionDateTime = DateTime.Now;
+
+        if (ModelState.IsValid)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _logger = logger;
-            _emailSender = emailSender;
-        }
-
-        public void OnGet(string? returnUrl = null)
-        {
-            ReturnUrl = returnUrl ?? string.Empty;
-        }
-
-        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
-        {
-            returnUrl ??= Url.Content("~/");
-
-            DateTime submissionDateTime = DateTime.Now;
-
-            if (ModelState.IsValid)
+            var user = new User()
             {
-                ApplicationUser user = new ApplicationUser()
+                Email = Input.Email,
+                NormalizedEmail = Input.Email.ToUpper(),
+                UserName = Input.Email,
+                NormalizedUserName = Input.Email.ToUpper(),
+                PhoneNumber = Input.PhoneNumber,
+                DateCreated = submissionDateTime,
+                DateUpdated = submissionDateTime,
+                Status = UserStatus.Active,
+                MembershipStatus = MembershipStatus.None
+            };
+
+            var result = await _userService.CreateAsync(user, Input.Password);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("User created a new account with password.");
+
+                var userId = await _userService.GetUserIdAsync(user);
+                var code = await _userService.GenerateEmailConfirmationTokenAsync(user);
+
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                var callbackUrl = Url.Page(
+                    "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { userId, code, returnUrl },
+                    protocol: Request.Scheme);
+
+                if (callbackUrl == null)
                 {
-                    Email = Input.Email,
-                    NormalizedEmail = Input.Email.ToUpper(),
-                    UserName = Input.Email,
-                    NormalizedUserName = Input.Email.ToUpper(),
-                    PhoneNumber = Input.PhoneNumber,
-                    DateCreated = submissionDateTime,
-                    DateUpdated = submissionDateTime,
-                    Status = Status.Registered
-                };
+                    var ex = new NullReferenceException(nameof(callbackUrl));
+                    _logger.LogError(ex, ex.Message);
 
-                IdentityResult result = await _userManager.CreateAsync(user, Input.Password);
-
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    string userId = await _userManager.GetUserIdAsync(user);
-                    string code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    string? callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId, code, returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
+                    throw ex;
                 }
-                foreach (IdentityError error in result.Errors)
+
+                await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                if (_userService.RequireConfirmedAccount())
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
+                }
+                else
+                {
+                    await _userService.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
                 }
             }
 
-            return Page();
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
+
+        return Page();
     }
 }

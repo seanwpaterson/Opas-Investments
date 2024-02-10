@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Identity;
+@using Opas.Core.DataService.Models.Users;
+@using Opas.Core.DataService.Services.Users;
 @using SiteWeb.Models.Users;
 @using System.Security.Claims;
 @inject IHttpContextAccessor? _context;
-@inject UserManager<ApplicationUser> _userManager;
+@inject IUserService _userService;
 @{
     var icon = "header-icon-link";
 
@@ -12,11 +14,11 @@
         icon = "header-sustainability-icon-link";
     }
 
-    ApplicationUser? user = null;
+    User? user = null;
 
-    if (_context.HttpContext is not null)
+    if (_context is not null && _context.HttpContext is not null)
     {
-        user = _userManager.GetUserAsync(_context.HttpContext.User).Result;
+        user = _userService.GetUserAsync(_context.HttpContext.User).Result;
     }
 }
 

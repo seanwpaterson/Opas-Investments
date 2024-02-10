@@ -1,10 +1,13 @@
 ﻿@page
 @model SiteWeb.Pages.GuidanceModel
+@{
+    ViewData["Title"] = "Guidance";
+}
 
 <section class="disclaimer-section">
     <div class="container">
         <div class="body-margin">
-            <h1 class="h1">Guidance</h1>
+            <h1 class="h2">@ViewData["Title"]</h1>
             <hr>
             <h2 class="h3">Why you need to be investing in @DateTime.Today.Year</h2>
             <p>

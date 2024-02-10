@@ -1,0 +1,55 @@
+﻿@page "{*Id}"
+@model SiteWeb.Pages.Account.Admin.Portfolios.EditModel
+@{
+    ViewData["Title"] = "Edit Portfolio";
+
+}
+
+<main>
+    <section class="container">
+        <div style="padding: 20px 0px;">
+            <h4><a asp-page="/Account/Admin/Index">Menu</a>   &gt;   <a asp-page="/Account/Admin/Portfolios/Index">Portfolios</a>   &gt;   Edit</h4>
+        </div>
+    </section>
+
+    <section class="panel-info">
+        <div class="container">
+            <div class="row panel-info-main">
+                <div class="lg-12">
+
+                    <form class="form" asp-antiforgery="true" method="post" action="" novalidate="novalidate" enctype="multipart/form-data">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Title" class="form-label"></label>
+                            <input asp-for="Title" class="input-field" />
+                            <span asp-validation-for="Title"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="input-field" rows="5"></textarea>
+                            <span asp-validation-for="Description"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Portfolio" class="form-label"></label>
+                            <input asp-for="Portfolio" class="input-field" accept=".pdf" />
+                            <span asp-validation-for="Portfolio"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="PublishDate" class="form-label"></label>
+                            <input asp-for="PublishDate" class="input-field" type="date" />
+                            <span asp-validation-for="PublishDate"></span>
+                        </div>
+
+                        <button type="submit" class="expanded btn btn-primary button">Submit</button>
+                        <a asp-page="/Account/Admin/Portfolios/Delete" asp-route-id="@Model.Id" class="expanded button btn btn-danger">Delete</a>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>

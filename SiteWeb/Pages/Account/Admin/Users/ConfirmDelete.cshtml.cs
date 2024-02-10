@@ -1,75 +1,102 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SiteWeb.Models.Users;
+using Opas.Core.DataService.Infrastructure;
+using Opas.Core.DataService.Models.Users;
+using Opas.Core.DataService.Services.Users;
 using SiteWeb.Services;
 using System.ComponentModel.DataAnnotations;
 
-namespace SiteWeb.Pages.Account.Admin.Users
+namespace SiteWeb.Pages.Account.Admin.Users;
+
+public class ConfirmDeleteModel : PageModel
 {
-	public class ConfirmDeleteModel : PageModel
-	{
-		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly IAuthorizationAdminService _authorizationService;
+    protected readonly IUserService _userService;
+    protected readonly IAuthorizationAdminService _authorizationService;
 
-		public ApplicationUser? ApplicationUser { get; set; }
+    public User? ApplicationUser { get; set; }
 
-		[BindProperty]
-		[Display(Name = "Tick this to confirm deletion")]
-		public bool Confirm { get; set; }
+    [BindProperty]
+    [Display(Name = "Tick this to confirm deletion")]
+    public bool Confirm { get; set; }
 
-		public ConfirmDeleteModel(UserManager<ApplicationUser> userManager, IAuthorizationAdminService authorizationService)
-		{
-			_userManager = userManager;
-			_authorizationService = authorizationService;
-		}
+    public ConfirmDeleteModel(IUserService userService,
+        IAuthorizationAdminService authorizationService)
+    {
+        _userService = userService;
+        _authorizationService = authorizationService;
+    }
 
-		public async Task<IActionResult> OnGetAsync(string id)
-		{
-			bool isAuthorized = await _authorizationService.AuthorizeForAdminAsync(this.User);
+    public async Task<IActionResult> OnGetAsync(string id)
+    {
+        if (await _authorizationService.AuthorizeForAdminAsync(User) == false)
+        {
+            return StatusCode(403);
+        }
 
-			if (isAuthorized == false)
-			{
-				return Forbid();
-			}
-			ViewData["Layout"] = "Admin";
+        var user = UserHelper.GetUserFromClaims(User, _userService);
 
-			ApplicationUser = _userManager.Users.Where(u => u.Id == id).FirstOrDefault();
+        if (user == null)
+        {
+            return StatusCode(403);
+        }
 
-			if (ApplicationUser is null)
-			{
-				return NotFound();
-			}
+        var isAuthorised = await _userService.IsInRoleAsync(user, UserHelper.UserManagementRoleName);
 
-			return Page();
-		}
+        if (isAuthorised == false)
+        {
+            return StatusCode(403);
+        }
 
-		public async Task<IActionResult> OnPostAsync(string id)
-		{
-			bool isAuthorized = await _authorizationService.AuthorizeForAdminAsync(this.User);
+        ViewData["Layout"] = "Admin";
 
-			if (isAuthorized == false)
-			{
-				return Forbid();
-			}
-			ViewData["Layout"] = "Admin";
+        ApplicationUser = await _userService.FindByIdAsync(id);
 
-			ApplicationUser = _userManager.Users.Where(u => u.Id == id).FirstOrDefault();
+        if (ApplicationUser is null)
+        {
+            return NotFound();
+        }
 
-			if (ApplicationUser == null)
-			{
-				return NotFound();
-			}
+        return Page();
+    }
 
-			if (Confirm != true)
-			{
-				ModelState.AddModelError(string.Empty, "Please confirm you want to delete this user.");
-				return Page();
-			}
+    public async Task<IActionResult> OnPostAsync(string id)
+    {
+        if (await _authorizationService.AuthorizeForAdminAsync(User) == false)
+        {
+            return StatusCode(403);
+        }
 
-			await _userManager.DeleteAsync(ApplicationUser);
+        var user = UserHelper.GetUserFromClaims(User, _userService);
 
-			return RedirectToPage("/Account/Admin/Users/Index");
-		}
-	}
+        if (user == null)
+        {
+            return StatusCode(403);
+        }
+
+        var isAuthorised = await _userService.IsInRoleAsync(user, UserHelper.UserManagementRoleName);
+
+        if (isAuthorised == false)
+        {
+            return StatusCode(403);
+        }
+
+        ViewData["Layout"] = "Admin";
+
+        ApplicationUser = await _userService.FindByIdAsync(id);
+
+        if (ApplicationUser == null)
+        {
+            return NotFound();
+        }
+
+        if (Confirm != true)
+        {
+            ModelState.AddModelError(string.Empty, "Please confirm you want to delete this user.");
+            return Page();
+        }
+
+        await _userService.DeleteAsync(ApplicationUser);
+
+        return RedirectToPage("/Account/Admin/Users/Index");
+    }
 }

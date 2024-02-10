@@ -1,0 +1,56 @@
+﻿@page
+@model SiteWeb.Pages.Account.Portfolios.DetailsModel
+@{
+    var portfolio = Model.Portfolio;
+
+    if (portfolio == null)
+    {
+        return;
+    }
+
+    ViewData["Title"] = portfolio.Title;
+
+    var fileData = $"/portfolios/{portfolio.PortfolioFile.FileName}#zoom=85&scrollbar=0&toolbar=0&navpanes=0";
+}
+
+<section class="disclaimer-section">
+    <div class="container">
+        <div class="body-margin">
+            <div>
+                <p><a asp-page="/Account/Index">Account</a>   &gt;   <a asp-page="/Account/Portfolios/Index">Portfolios</a>   &gt;   @portfolio.Title</p>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-11 large-9 align-self-middle">
+                    <div style="display: inline-flex;">
+                        <h1 class="h2">@ViewData["Title"]</h1>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Description:</strong>
+                </div>
+                <div class="cell small-12 large-10 align-self-middle">
+                    <span>@portfolio.Description</span>
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="cell small-12 large-2 align-self-middle">
+                    <strong>Date published:</strong>
+                </div>
+                <div class="cell small-12 large-10 align-self-middle">
+                    <span>@portfolio.DatePublished.ToShortDateString()</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="wrapper" id="pdf">
+    <object width="100%" height="100%" type="application/pdf" data="@fileData" id="pdf_content" style="pointer-events: none;">
+        <p>Oops. Something went wrong loading this document.</p>
+        <p>Pl</p>
+    </object>
+    <div class="embed-cover"></div>
+</div>
