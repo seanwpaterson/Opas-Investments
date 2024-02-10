@@ -1,68 +1,65 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SiteWeb.Models.Users;
+using Opas.Core.DataService.Models.Users;
+using Opas.Core.DataService.Services.Users;
 using System.ComponentModel.DataAnnotations;
 
-namespace SiteWeb.Pages.Account
+namespace SiteWeb.Pages.Account;
+
+public class ConfirmDeleteModel : PageModel
 {
-	public class ConfirmDeleteModel : PageModel
-	{
-		private readonly UserManager<ApplicationUser> _userManager;
-		private readonly SignInManager<ApplicationUser> _signInManager;
+    protected readonly IUserService _userService;
 
-		public ApplicationUser? ApplicationUser { get; set; }
+    public User? ApplicationUser { get; set; }
 
-		[BindProperty]
-		[Display(Name = "Tick this to confirm deletion")]
-		public bool Confirm { get; set; }
+    [BindProperty]
+    [Display(Name = "Tick this to confirm deletion")]
+    public bool Confirm { get; set; }
 
-		public ConfirmDeleteModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
-		{
-			_userManager = userManager;
-			_signInManager = signInManager;
-		}
+    public ConfirmDeleteModel(IUserService userService)
+    {
+        _userService = userService;
+    }
 
-		public async Task<IActionResult> OnGetAsync()
-		{
-			if (!_signInManager.IsSignedIn(HttpContext.User))
-			{
-				return RedirectToPage("/Account/Login");
-			}
+    public async Task<IActionResult> OnGetAsync()
+    {
+        if (!_userService.IsSignedIn(HttpContext.User))
+        {
+            return RedirectToPage("/Account/Login");
+        }
 
-			ApplicationUser = await _userManager.GetUserAsync(HttpContext.User);
+        ApplicationUser = await _userService.GetUserAsync(HttpContext.User);
 
-			if (ApplicationUser is null)
-			{
-				return NotFound();
-			}
+        if (ApplicationUser is null)
+        {
+            return NotFound();
+        }
 
-			return Page();
-		}
+        return Page();
+    }
 
-		public async Task<IActionResult> OnPostAsync()
-		{
-			if (!_signInManager.IsSignedIn(HttpContext.User))
-			{
-				return RedirectToPage("/Account/Login");
-			}
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!_userService.IsSignedIn(HttpContext.User))
+        {
+            return RedirectToPage("/Account/Login");
+        }
 
-			ApplicationUser = await _userManager.GetUserAsync(HttpContext.User);
+        ApplicationUser = await _userService.GetUserAsync(HttpContext.User);
 
-			if (ApplicationUser is null)
-			{
-				return NotFound();
-			}
+        if (ApplicationUser is null)
+        {
+            return NotFound();
+        }
 
-			if (Confirm != true)
-			{
-				ModelState.AddModelError(string.Empty, "Please confirm you want to delete your account.");
-				return Page();
-			}
+        if (Confirm != true)
+        {
+            ModelState.AddModelError(string.Empty, "Please confirm you want to delete your account.");
+            return Page();
+        }
 
-			await _userManager.DeleteAsync(ApplicationUser);
+        await _userService.DeleteAsync(ApplicationUser);
 
-			return RedirectToPage("../");
-		}
-	}
+        return RedirectToPage("../");
+    }
 }

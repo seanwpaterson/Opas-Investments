@@ -1,30 +1,46 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Opas.Core.DataService.Infrastructure;
+using Opas.Core.DataService.Services.Users;
 using SiteWeb.Services;
 
-namespace SiteWeb.Pages.Account.Admin.Users
+namespace SiteWeb.Pages.Account.Admin.Users;
+
+public class IndexModel : PageModel
 {
-	public class IndexModel : PageModel
-	{
-		private readonly IAuthorizationAdminService _authorizationService;
+    protected readonly IUserService _userService;
+    protected readonly IAuthorizationAdminService _authorizationService;
 
-		public IndexModel(IAuthorizationAdminService authorizationService)
-		{
-			_authorizationService = authorizationService;
-		}
+    public IndexModel(IUserService userService,
+        IAuthorizationAdminService authorizationService)
+    {
+        _userService = userService;
+        _authorizationService = authorizationService;
+    }
 
-		public async Task<IActionResult> OnGet()
-		{
-			bool isAuthorized = await _authorizationService.AuthorizeForAdminAsync(this.User);
+    public async Task<IActionResult> OnGet()
+    {
+        if (await _authorizationService.AuthorizeForAdminAsync(User) == false)
+        {
+            return StatusCode(403);
+        }
 
-			if (isAuthorized == false)
-			{
-				return Forbid();
-			}
+        var user = UserHelper.GetUserFromClaims(User, _userService);
 
-			ViewData["Layout"] = "Admin";
+        if (user == null)
+        {
+            return StatusCode(403);
+        }
 
-			return Page();
-		}
-	}
+        var isAuthorised = await _userService.IsInRoleAsync(user, UserHelper.UserManagementRoleName);
+
+        if (isAuthorised == false)
+        {
+            return StatusCode(403);
+        }
+
+        ViewData["Layout"] = "Admin";
+
+        return Page();
+    }
 }

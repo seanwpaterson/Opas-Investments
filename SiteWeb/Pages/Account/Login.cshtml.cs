@@ -3,91 +3,86 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Opas.Core.DataService.Services.Users;
 using SiteWeb.Models.Users;
 
-namespace SiteWeb.Pages.Account
+namespace SiteWeb.Pages.Account;
+
+[AllowAnonymous]
+public class LoginModel : PageModel
 {
-    [AllowAnonymous]
-    public class LoginModel : PageModel
+    private readonly IUserService _userService;
+    private readonly ILogger<LoginModel> _logger;
+
+    public LoginModel(
+        IUserService userService,
+        ILogger<LoginModel> logger)
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ILogger<LoginModel> _logger;
+        _userService = userService;
+        _logger = logger;
+    }
 
-        public LoginModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            ILogger<LoginModel> logger)
+    [BindProperty]
+    public LoginFormModel Input { get; set; }
+
+    public string ReturnUrl { get; set; }
+
+    [TempData]
+    public string ErrorMessage { get; set; }
+
+    public async Task OnGetAsync(string returnUrl = null)
+    {
+        if (!string.IsNullOrEmpty(returnUrl))
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
+            ModelState.AddModelError(string.Empty, returnUrl);
         }
 
-        [BindProperty]
-        public LoginFormModel Input { get; set; }
+        returnUrl ??= Url.Content("~/");
 
-        public string ReturnUrl { get; set; }
+        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-        [TempData]
-        public string ErrorMessage { get; set; }
+        ReturnUrl = returnUrl;
+    }
 
-        public async Task OnGetAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    {
+        returnUrl ??= Url.Content("~/");
+
+        if (ModelState.IsValid)
         {
-            if (!string.IsNullOrEmpty(returnUrl))
+            var result = await _userService.PasswordSignInAsync(Input.Email,
+                Input.Password, Input.RememberMe);
+
+            if (result.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, returnUrl);
+                _logger.LogInformation("User logged in.");
+
+                if (returnUrl == null)
+                {
+                    return RedirectToPage("./Account");
+                }
+
+                if (Url.IsLocalUrl(returnUrl))
+                {
+                    return LocalRedirect(returnUrl);
+                }
+
+                return Redirect("/");
             }
 
-            returnUrl = returnUrl ?? Url.Content("~/");
-
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ReturnUrl = returnUrl;
-        }
-
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
-        {
-            returnUrl = returnUrl ?? Url.Content("~/");
-
-            if (ModelState.IsValid)
+            if (result.IsLockedOut)
             {
-                Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(Input.Email!,
-                    Input.Password!, Input.RememberMe, lockoutOnFailure: true);
+                _logger.LogWarning("User account locked out");
 
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-
-                    string id = _userManager.Users.Where(u => u.Email == Input.Email).First().Id;
-
-                    if (returnUrl == null)
-                    {
-                        return RedirectToPage("./Account");
-                    }
-
-                    if (Url.IsLocalUrl(returnUrl))
-                    {
-                        return LocalRedirect(returnUrl);
-                    }
-
-                    return Redirect("/");
-                }
-
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out");
-
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt");
-                    return Page();
-                }
+                return RedirectToPage("./Lockout");
             }
-
-            return Page();
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt");
+                return Page();
+            }
         }
+
+        return Page();
     }
 }

@@ -1,48 +1,42 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SiteWeb.Models.Users;
+using Opas.Core.DataService.Services.Users;
 
-namespace SiteWeb.Pages.Account
+namespace SiteWeb.Pages.Account;
+
+public class LogoutModel : PageModel
 {
-    public class LogoutModel : PageModel
+    protected readonly IUserService _userService;
+    protected readonly ILogger<LogoutModel> _logger;
+
+    public LogoutModel(IUserService userService,
+        ILogger<LogoutModel> logger)
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly ILogger<LogoutModel> _logger;
+        _userService = userService;
+        _logger = logger;
+    }
 
-        public LogoutModel(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            ILogger<LogoutModel> logger)
+    public void OnGet()
+    {
+        if (_userService.GetUserAsync(HttpContext.User) == null)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
+            _ = RedirectToPage("/Account/Login");
         }
+    }
 
-        public void OnGet()
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+    {
+        await _userService.SignOutAsync();
+
+        _logger.LogInformation("User logged out.");
+
+        if (returnUrl != null)
         {
-            if (_userManager.GetUserAsync(HttpContext.User) == null)
-            {
-                RedirectToPage("/Account/Login");
-            }
+            return LocalRedirect(returnUrl);
         }
-
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        else
         {
-            await _signInManager.SignOutAsync();
-
-            _logger.LogInformation("User logged out.");
-
-            if (returnUrl != null)
-            {
-                return LocalRedirect(returnUrl);
-            }
-            else
-            {
-                return Redirect("/");
-            }
+            return Redirect("/");
         }
     }
 }

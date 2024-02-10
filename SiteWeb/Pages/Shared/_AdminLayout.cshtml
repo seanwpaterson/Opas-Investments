@@ -18,7 +18,7 @@
 	<script>
 
 		var usersTable = null;
-		var enquiriesTabel = null;
+		var inquiriesTabel = null;
 
 		function drawUsersTable() {
 
@@ -59,9 +59,9 @@
 			}
 
 			usersTable = $('#usersTable').DataTable({
-				searching: true,
+				"searching": true,
 				"lengthChange": false,
-				"info": false,
+				"info": true,
 				"autoWidth": false,
 				"responsive": {
 					breakpoints: [
@@ -72,18 +72,24 @@
 					]
 				},
 				pagingType: 'numbers',
-				"dom": '<"row justify-content-between top-information"><"search-bar"f>rt<"bottom-information high-priority-table-pagination"ip><"clear">',
+				"dom": '<"row justify-content-between top-information">rt<"justify-content-between bottom-information high-priority-table-pagination"ip><"clear">',
 				// "fixedHeader": false,
 				"pageLength": 10,
 				columns: [
-					{ data: 'lastName' },
-					{ data: 'firstName' },
+					{ data: 'displayName' },
 					{ data: 'emailAddress' },
 					{
 						data: {
 							"_": "status",
 							"filter": "status",
 							"display": "statusHtml"
+						}
+					},
+					{
+						data: {
+							"_": "membershipStatus",
+							"filter": "membershipStatus",
+							"display": "membershipStatusHtml"
 						}
 					},
 					{
@@ -106,7 +112,7 @@
 					}
 				},
 				ajax: {
-					url: "/api/users/",
+					url: "/api/users/all/",
 					dataSrc: ""
 				},
 				deferRender: true,
@@ -130,7 +136,7 @@
 			});
 		}
 
-		function drawEnquiriesTable() {
+		function drawPortfoliosTable() {
 
 			var minDate, maxDate;
 
@@ -168,12 +174,10 @@
 				maxDate = null;
 			}
 
-			enquiriesTabel = $('#enquiriesTable').DataTable({
-				search: {
-					return: true
-				},
+			portfoliosTable = $('#portfoliosTable').DataTable({
+				"searching": true,
 				"lengthChange": false,
-				"info": false,
+				"info": true,
 				"autoWidth": false,
 				"responsive": {
 					breakpoints: [
@@ -184,51 +188,41 @@
 					]
 				},
 				pagingType: 'numbers',
-				"dom": '<"row justify-content-between top-information"><"search-bar"f>rt<"bottom-information high-priority-table-pagination"ip><"clear">',
+				"dom": '<"row justify-content-between top-information">rt<"justify-content-between bottom-information high-priority-table-pagination"ip><"clear">',
 				// "fixedHeader": false,
 				"pageLength": 10,
 				columns: [
 					{ data: 'id'},
-					{ data: 'lastName' },
-					{ data: 'firstName' },
-					{ data: 'emailAddress' },
-					{ data: 'phoneNumber' },
+					{ data: 'title' },
 					{
 						data: {
-							"_": "status",
-							"filter": "status",
-							"display": "statusHtml"
+							"_": "datePublished",
+							"filter": "datePublished",
+							"display": "datePublishedHtml"
 						}
-					},
-					{
-						data: {
-							"_": "submittedDate",
-							"filter": "submittedDate",
-							"display": "submittedDateHtml"
-						}
-					},
+					}
 				],
 				language: {
 					search: "",
-					searchPlaceholder: "Search Enquiries",
-					emptyTable: "<div class='callout warning text-center margin-0'><p>No enquiries found</p></div>",
-					zeroRecords: "<div class='callout warning text-center margin-0'><p class='h4'>No matching enquiries found</p></div>",
-					loadingRecords: "Loading Enquiries...",
+					searchPlaceholder: "Search Inquiries",
+					emptyTable: "<div class='callout warning text-center margin-0'><p>No portfolios found</p></div>",
+					zeroRecords: "<div class='callout warning text-center margin-0'><p class='h4'>No matching portfolios found</p></div>",
+					loadingRecords: "Loading Portfolios...",
 					aria: {
 						sortAscending: ": activate to sort column ascending",
 						sortDescending: ": activate to sort column descending",
 					}
 				},
 				ajax: {
-					url: "/api/enquiries/",
+					url: "/api/portfolios/all/",
 					dataSrc: ""
 				},
 				deferRender: true,
 				rowId: 'Id',
 			});
 
-			enquiriesTabel.on("click", "tr", function (e, dt, type, indexes) {
-				var row = enquiriesTabel.row(this).data();
+			portfoliosTable.on("click", "tr", function (e, dt, type, indexes) {
+				var row = portfoliosTable.row(this).data();
 
 				if (row == null) {
 					return;
@@ -237,7 +231,7 @@
 				var id = row.id;
 
 				if (typeof id != 'undefined') {
-					document.location.href = '/Account/Admin/Enquiries/Details/' + id;
+					document.location.href = '/Account/Admin/Portfolios/Edit/' + id;
 				}
 
 				return;
@@ -245,7 +239,7 @@
 		}
 
 		drawUsersTable();
-		drawEnquiriesTable();
+		drawPortfoliosTable();
 	</script>
 
 </body>

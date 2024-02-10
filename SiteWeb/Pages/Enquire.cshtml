@@ -1,85 +1,17 @@
 ﻿@page
 @model SiteWeb.Pages.RegisterModel
 @{
-    ViewData["Title"] = "Register for a free consultation";
+    ViewData["Title"] = "Book a free consultation";
 }
 
 <section id="registration" class="grid-x grid-padding-x align-center">
     <div class="large-6 medium-12 cell">
-        <h1 class="h1 align-left">@ViewData["Title"]</h1>
 
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <hr />
-            <div class="grid-x grid-padding-x align-left">
-                <div class="large-3 cell">
-                    <label asp-for="Input!.FirstName" class="text-left middle"></label>
-                </div>
-                <div class="large-9 cell">
-                    <input asp-for="Input!.FirstName">
-                    <span asp-validation-for="Input!.FirstName"></span>
-                </div>
-            </div>
-            <div class="grid-x grid-padding-x">
-                <div class="large-3 cell">
-                    <label asp-for="Input!.LastName" class="text-left middle"></label>
-                </div>
-                <div class="large-9 cell">
-                    <input asp-for="Input!.LastName">
-                    <span asp-validation-for="Input!.LastName"></span>
-                </div>
-            </div>
-            <div class="grid-x grid-padding-x">
-                <div class="large-3 cell">
-                    <label asp-for="Input!.Email" class="text-left middle"></label>
-                </div>
-                <div class="large-9 cell">
-                    <input asp-for="Input!.Email">
-                    <span asp-validation-for="Input!.Email"></span>
-                </div>
-            </div>
-            <div class="grid-x grid-padding-x">
-                <div class="large-3 cell">
-                    <label asp-for="Input!.PhoneNumber" class="text-left middle"></label>
-                </div>
-                <div class="large-9 cell">
-                    <input asp-for="Input!.PhoneNumber">
-                    <span asp-validation-for="Input!.PhoneNumber"></span>
-                </div>
-            </div>
-            <hr>
-            <div class="grid-x grid-padding-x">
-                <div class="large-3 cell">
-                    <label asp-for="Input!.InvestmentPlatform" class="text-left middle"></label>
-                </div>
-                <div class="large-9 cell">
-                    <input asp-for="Input!.InvestmentPlatform">
-                    <span asp-validation-for="Input!.InvestmentPlatform"></span>
-                </div>
-            </div>
-            <div class="grid-x grid-padding-x">
-                <div class="large-3 cell">
-                    <label asp-for="Input!.Notes" class="text-left middle"></label>
-                </div>
-                <div class="large-9 cell">
-                    <textarea asp-for="Input!.Notes" rows="4"></textarea>
-                </div>
-            </div>
-            <div class="grid-x grid-padding-x">
-                <div class="large-3 cell">
-                    <label asp-for="Input!.BestAvailability" class="text-left middle"></label>
-                </div>
-                <div class="large-9 cell">
-                    <input asp-for="Input!.BestAvailability">
-                    <span asp-validation-for="Input!.BestAvailability"></span>
-                </div>
-            </div>
-            <div class="grid-x grid-padding-x">
-                <div class="large-3 small-12 cell">
-                    <button class="button btn-primary" type="submit">Submit</button>
-                </div>
-            </div>
-        </form>
+        <h1 class="h2 align-left">@ViewData["Title"]</h1>
+
+        <div class="calendly-inline-widget" data-url="https://calendly.com/opasinvestments?primary_color=061a37" style="min-width:320px;height:700px;"></div>
+        <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+
     </div>
 </section>
 

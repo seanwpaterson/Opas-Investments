@@ -11,32 +11,75 @@
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="MailKit" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="7.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.15">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.8" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Middleware\" />
-    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\js\DataTables\" />
+    <Folder Include="wwwroot\portfolios\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Pages\Account\RegisterConfirmation.cshtml">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+    <None Include="Pages\Account\AccessDenied.cshtml" />
+    <None Include="Pages\Account\Admin\Index.cshtml" />
+    <None Include="Pages\Account\Admin\Users\ConfirmDelete.cshtml" />
+    <None Include="Pages\Account\Admin\Users\Details.cshtml" />
+    <None Include="Pages\Account\Admin\Users\Index.cshtml" />
+    <None Include="Pages\Account\ConfirmDelete.cshtml" />
+    <None Include="Pages\Account\ConfirmEmail.cshtml" />
+    <None Include="Pages\Account\Edit.cshtml" />
+    <None Include="Pages\Account\ForgotPassword.cshtml" />
+    <None Include="Pages\Account\ForgotPasswordConfirmation.cshtml" />
+    <None Include="Pages\Account\Index.cshtml" />
+    <None Include="Pages\Account\Lockout.cshtml" />
+    <None Include="Pages\Account\Login.cshtml" />
+    <None Include="Pages\Account\Logout.cshtml" />
+    <None Include="Pages\Account\Register.cshtml" />
+    <None Include="Pages\Account\RegisterConfirmation.cshtml" />
+    <None Include="Pages\Account\ResendEmailConfirmation.cshtml" />
+    <None Include="Pages\Account\ResetPassword.cshtml" />
+    <None Include="Pages\Account\ResetPasswordConfirmation.cshtml" />
+    <None Include="Pages\Account\_StatusMessage.cshtml" />
+    <None Include="Pages\Calculator.cshtml" />
+    <None Include="Pages\Cookies.cshtml" />
+    <None Include="Pages\Disclaimer.cshtml" />
+    <None Include="Pages\Enquire.cshtml" />
+    <None Include="Pages\Error.cshtml" />
+    <None Include="Pages\Guidance.cshtml" />
+    <None Include="Pages\Index.cshtml" />
+    <None Include="Pages\Privacy.cshtml" />
+    <None Include="Pages\Research.cshtml" />
+    <None Include="Pages\Shared\_AdminFooter.cshtml" />
+    <None Include="Pages\Shared\_AdminHead.cshtml" />
+    <None Include="Pages\Shared\_AdminHeader.cshtml" />
+    <None Include="Pages\Shared\_AdminLayout.cshtml" />
+    <None Include="Pages\Shared\_AdminScripts.cshtml" />
+    <None Include="Pages\Shared\_CalculatorScript.cshtml" />
+    <None Include="Pages\Shared\_Footer.cshtml" />
+    <None Include="Pages\Shared\_Head.cshtml" />
+    <None Include="Pages\Shared\_Layout.cshtml" />
+    <None Include="Pages\Shared\_LoginPartial.cshtml" />
+    <None Include="Pages\Shared\_NavBar.cshtml" />
+    <None Include="Pages\Shared\_Scripts.cshtml" />
+    <None Include="Pages\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Pages\Strategies.cshtml" />
+    <None Include="Pages\Sustainability.cshtml" />
+    <None Include="Pages\Terms.cshtml" />
+    <None Include="Pages\_ViewImports.cshtml" />
+    <None Include="Pages\_ViewStart.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Opas.Core.DataService\Opas.Core.DataService.csproj" />
   </ItemGroup>
 
 </Project>

@@ -54,10 +54,10 @@ public class CalculatorModel : PageModel
 
     public void OnPost()
     {
-        double totalInvestedReturnPercentage = TotalInvestedReturnPercentage;
-        double savingsReturnPercentage = SavingsReturnPercentage;
-        double sp500ReturnPercentage = Sp500ReturnPercentage;
-        double opasReturnPercentage = OpasReturnPercentage;
+        var totalInvestedReturnPercentage = TotalInvestedReturnPercentage;
+        var savingsReturnPercentage = SavingsReturnPercentage;
+        var sp500ReturnPercentage = Sp500ReturnPercentage;
+        var opasReturnPercentage = OpasReturnPercentage;
 
         TotalInvested = InitialDeposit!.Value;
         SavingsReturn = InitialDeposit!.Value;
@@ -72,7 +72,7 @@ public class CalculatorModel : PageModel
             opasReturnPercentage -= InflationPercentage;
         }
 
-        for (int i = 0; i < Years; i++)
+        for (var i = 0; i < Years; i++)
         {
             if (Reinvest)
             {

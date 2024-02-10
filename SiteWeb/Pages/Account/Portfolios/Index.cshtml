@@ -1,0 +1,53 @@
+﻿@page
+@model SiteWeb.Pages.Account.Portfolios.IndexModel
+@{
+    ViewData["Title"] = "Portfolios";
+}
+
+<section class="disclaimer-section">
+    <div class="container">
+        <div class="body-margin">
+            <div>
+                <p><a asp-page="/Account/Index">Account</a>   &gt;   Portfolios</p>
+            </div>
+
+            <h1 class="h2 align-left">@ViewData["Title"]</h1>
+
+            <div class="table-scroll">
+                <table class="unstriped govuk-table entity-table margin-bottom-2">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col" class="text-center">Published</th>
+                            <th scope="col" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            @if (Model.Portfolios.Count() == 0)
+                            {
+                                <tr>
+                                    <td colspan="3">You currently have no portfolios to view.</td>
+                                </tr>
+                            }
+
+                            @foreach (var portfolio in Model.Portfolios)
+                            {
+                                <tr>
+                                    <td class="string__value">
+                                        @portfolio.Title
+                                    </td>
+                                    <td class="string__value text-center">
+                                        @portfolio.DatePublished.ToShortDateString()
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-page="/Account/Portfolios/Details" asp-route-id="@portfolio.Id">View</a>
+                                    </td>
+                                </tr>
+                            }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</section>

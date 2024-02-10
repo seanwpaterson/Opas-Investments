@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace SiteWeb.Pages
+namespace SiteWeb.Pages;
+
+public class DisclaimerModel : PageModel
 {
-    public class DisclaimerModel : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-        }
     }
 }

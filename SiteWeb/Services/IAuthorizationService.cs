@@ -1,37 +1,33 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SiteWeb.Models.Users;
+﻿using Opas.Core.DataService.Services.Users;
 using System.Security.Claims;
 
 namespace SiteWeb.Services;
 
 public interface IAuthorizationAdminService
 {
-	Task<bool> AuthorizeForAdminAsync(ClaimsPrincipal principal);
+    Task<bool> AuthorizeForAdminAsync(ClaimsPrincipal principal);
 }
 
 public class AuthorizeAdminService : IAuthorizationAdminService
 {
-	protected const string AdministratorRoleId = "Administrator";
-	protected const string UserManagementRoleId = "UMR";
-	protected const string EnquiryManagementRoleId = "EMR";
-	protected const string PortfolioManagementRoleId = "PMR";
+    protected const string AdministratorRoleId = "Administrator";
 
-	private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IUserService _userService;
 
-	public AuthorizeAdminService(UserManager<ApplicationUser> userManager)
-	{
-		_userManager = userManager;
-	}
+    public AuthorizeAdminService(IUserService userService)
+    {
+        _userService = userService;
+    }
 
-	public async Task<bool> AuthorizeForAdminAsync(ClaimsPrincipal principal)
-	{
-		ApplicationUser? user = await _userManager.GetUserAsync(principal);
+    public async Task<bool> AuthorizeForAdminAsync(ClaimsPrincipal principal)
+    {
+        var user = await _userService.GetUserAsync(principal);
 
-		if (user is null)
-		{
-			return false;
-		}
+        if (user is null)
+        {
+            return false;
+        }
 
-		return await _userManager.IsInRoleAsync(user, AdministratorRoleId);
-	}
+        return await _userService.IsInRoleAsync(user, AdministratorRoleId);
+    }
 }

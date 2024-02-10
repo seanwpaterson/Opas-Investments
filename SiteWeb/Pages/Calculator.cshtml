@@ -1,6 +1,8 @@
 ﻿@page "/Tools/Calculator"
 @model SiteWeb.Pages.CalculatorModel
 @{
+    ViewData["Title"] = "The Opas Investments Calculator";
+
     var yearsValue = Model.Years.HasValue ? $"value={Model.Years}" : "";
     var initialDepositValue = Model.InitialDeposit.HasValue ? $"value={Model.InitialDeposit}" : "";
     var furtherDepositValue = Model.FurtherDeposit.HasValue ? $"value={Model.FurtherDeposit}" : "";
@@ -10,7 +12,7 @@
 
 <section class="disclaimer-section">
     <div class="container">
-        <h1>The Opas Investments Calculator</h1>
+        <h1 class="h2 align-left">@ViewData["Title"]</h1>
         <div class="row align-items-center">
             <div class="col-lg-4">
 

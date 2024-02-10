@@ -1,0 +1,38 @@
+﻿@page
+@model SiteWeb.Pages.Account.Admin.Portfolios.IndexModel
+@{
+	ViewData["Title"] = "Portfolios";
+}
+<main>
+	<section class="container">
+		<div style="padding: 20px 0px;">
+			<h4><a asp-page="/Account/Admin/Index">Menu</a>   &gt;   Portfolios</h4>
+		</div>
+	</section>
+
+	<section class="high-priority">
+		<div class="container">
+			<div class="row">
+				<div class="lg-12">
+					<div class="high-priority-header">
+						<h1 class="h4">Portfolios</h1>
+						<a asp-page="/Account/Admin/Portfolios/Add">Add Portfolio</a> <i class="fa-regular fa-square-plus"></i>
+					</div>
+					<div class="high-priority-table">
+						<table class="table dt-responsive cstm-datatable nowrap" id="portfoliosTable" cellspacing="0">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Title</th>
+									<th>Date Published</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
