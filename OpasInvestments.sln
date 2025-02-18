@@ -7,6 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SiteWeb", "SiteWeb\SiteWeb.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Opas.Core.DataService", "Opas.Core.DataService\Opas.Core.DataService.csproj", "{3BDF4676-B312-4FFC-969D-DA054D3A15A6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{791EB63E-B64E-451B-A608-F96CC2C72CF9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6C8F5094-2014-4900-8C9B-6D367244C45C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Opas.Domain", "Opas.Domain\Opas.Domain.csproj", "{F9537171-85D5-438E-A832-9AB23E8766F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +27,18 @@ Global
 		{3BDF4676-B312-4FFC-969D-DA054D3A15A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BDF4676-B312-4FFC-969D-DA054D3A15A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BDF4676-B312-4FFC-969D-DA054D3A15A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9537171-85D5-438E-A832-9AB23E8766F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9537171-85D5-438E-A832-9AB23E8766F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9537171-85D5-438E-A832-9AB23E8766F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9537171-85D5-438E-A832-9AB23E8766F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2D5FD703-9D5C-4441-93EA-F8285653D95A} = {791EB63E-B64E-451B-A608-F96CC2C72CF9}
+		{3BDF4676-B312-4FFC-969D-DA054D3A15A6} = {791EB63E-B64E-451B-A608-F96CC2C72CF9}
+		{F9537171-85D5-438E-A832-9AB23E8766F1} = {791EB63E-B64E-451B-A608-F96CC2C72CF9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {602CD866-9122-47FE-9EB3-2A7ED8BF4E78}
