@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Opas.Domain.Users;
 
-public class User : Entity
+public sealed class User : Entity
 {
     private User(
         Guid id,
@@ -37,7 +37,7 @@ public class User : Entity
 
     public DateTime? DateUpdated { get; internal set; }
 
-    public virtual List<Guid> PortfolioIds { get; private set; } = [];
+    public List<Guid> PortfolioIds { get; private set; } = [];
 
     public static User Create(
         Guid id,
