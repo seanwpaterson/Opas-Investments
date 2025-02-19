@@ -29,6 +29,8 @@ public sealed class User : Entity
 
     public LastName LastName { get; private set; }
 
+    public Email Email { get; private set; }
+
     public Address Address { get; private set; }
 
     public MembershipStatus MembershipStatus { get; internal set; }
